@@ -6,10 +6,19 @@ import { action } from "@storybook/addon-actions";
 import "index.scss";
 
 import Button from "components/Button";
+//Imports DayList component and subcomponent
 import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
+//Imports InterviewerList component and subcomponent
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+
+//Imports Appointment component and subcomponents
+import Appointment from "components/Appointment/index.js";
+import Header from "components/Appointment/Header.js";
+import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm"
 
 storiesOf("Button", module)
   .addParameters({
@@ -131,3 +140,14 @@ storiesOf("InterviewerList", module)
       onClick={action("setInterviewer")}
     />
   ));
+
+  storiesOf("Appointment", module)
+    .addParameters({
+      backgrounds: [{ name: "white", value: "#fff", default: true }]
+    })
+    .add("Appointment", () => <Appointment />)
+    .add("Appointment with Time", () => <Appointment time="12pm"/>)
+    .add("Header", () => <Header time="12pm" />)
+    .add("Empty", () => <Empty onAdd={action("onAdd")} />)
+    .add("Show", () => <Show student="Lydia Miller-Jones" interviewer={interviewers[0]} onEdit={action("onEdit")} onDelete={action("onDelete")} />)
+    .add("Confirm", () => <Confirm message="Delete the appointment?"  onCancel={action("onCancel")} onConfirm={action("onConfirm")}/>)
