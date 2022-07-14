@@ -43,7 +43,7 @@ export default function Application(props) {
       <nav className="sidebar__menu">
       <DayList
         days={days}
-        day={value}
+        day={day}
         onChange={setDay}
         />
       </nav>
