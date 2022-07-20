@@ -7,3 +7,16 @@ export function getAppointmentsForDay(state, day) {
     }
   return appointmentArray
 }
+
+export function getInterview(state, interview) {
+  // interview has student, interviewer OR null
+  if (interview === null) return null;
+
+  for (const chosenInterviewer in state.interviewers) {
+    if (chosenInterviewer === interview.interviewer.toString()) {
+      return {...interview, interviewer: state.interviewers[chosenInterviewer]}
+    }
+
+  }
+
+}
