@@ -1,3 +1,4 @@
+//Takes the list of appointments from state and the chosen day, and returns an array of only the appointments for that day
 export function getAppointmentsForDay(state, day) {
   let appointmentArray = [];
     for (const singleDay of state.days) {
@@ -8,6 +9,7 @@ export function getAppointmentsForDay(state, day) {
   return appointmentArray
 }
 
+//Takes the interviewers data from state, and for a given interview returns the interview with the name (rather than number) of the interviewer
 export function getInterview(state, interview) {
   if (interview === null) return null;
 

@@ -16,10 +16,13 @@ export default function Application(props) {
   });
 
   const dailyAppointments = getAppointmentsForDay(state, state.day)
+
+  //Aliasing of state functions for changing specific parameters
   const setDay = day => setState(prev => ({...prev, day}));
   const setDays = days => setState(prev => ({ ...prev, days }));
 
   useEffect(() => {
+    //Retrieves data from API and uploads state accordingly
     Promise.all([
       axios.get('http://localhost:8001/api/days'),
       axios.get('http://localhost:8001/api/appointments'),
@@ -28,7 +31,8 @@ export default function Application(props) {
       setState(prev => ({...prev, days:all[0].data, appointments:all[1].data, interviewers:all[2].data}))
     })
   }, []);
-
+  
+  //Creates an array of appointments for any given day
   const appointmentArray = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
     return (
