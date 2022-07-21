@@ -5,7 +5,7 @@ import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "./Appointment/index";
 
-import { getAppointmentsForDay, getInterview } from '../helpers/selectors'
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from '../helpers/selectors'
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -16,11 +16,13 @@ export default function Application(props) {
   });
 
   const dailyAppointments = getAppointmentsForDay(state, state.day)
+  const interviewersArray = getInterviewersForDay(state, state.day)
 
+  
   //Aliasing of state functions for changing specific parameters
   const setDay = day => setState(prev => ({...prev, day}));
   const setDays = days => setState(prev => ({ ...prev, days }));
-
+  
   useEffect(() => {
     //Retrieves data from API and uploads state accordingly
     Promise.all([
@@ -32,12 +34,14 @@ export default function Application(props) {
     })
   }, []);
   
+  
   //Creates an array of appointments for any given day
   const appointmentArray = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
     return (
       <Appointment 
       key={appointment.id}
+      interviewers={interviewersArray}
       {...appointment}
       />)
     })
@@ -68,7 +72,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appointmentArray}
-        <Appointment key="last" time="5pm" />
+        <Appointment key="last" time="5pm"/>
       </section>
     </main>
   );
