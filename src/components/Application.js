@@ -34,17 +34,24 @@ export default function Application(props) {
     })
   }, []);
   
-  
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+  }
+
   //Creates an array of appointments for any given day
   const appointmentArray = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
+
     return (
       <Appointment 
       key={appointment.id}
       interviewers={interviewersArray}
-      {...appointment}
+      interview={interview}
+      bookInterview={bookInterview}
       />)
     })
+
+
 
   return (
     <main className="layout">
