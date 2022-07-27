@@ -43,12 +43,26 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     }
-    // setState({...state, appointments})
+ 
     return axios.put(`http://localhost:8001/api/appointments/${id}`, appointment)
     .then(() =>setState({...state, appointments}))
     .catch(error => console.log('Error! ', error))
   }
 
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    return axios.delete(`http://localhost:8001/api/appointments/${id}`)
+    .then(() => setState({...state, appointments}))
+    
+  }
   //Creates an array of appointments for any given day
   const appointmentArray = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
@@ -60,6 +74,7 @@ export default function Application(props) {
       interviewers={interviewersArray}
       interview={interview}
       bookInterview={bookInterview}
+      cancelInterview={cancelInterview}
       />)
     })
 
