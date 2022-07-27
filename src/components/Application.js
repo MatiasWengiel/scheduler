@@ -46,7 +46,6 @@ export default function Application(props) {
  
     return axios.put(`http://localhost:8001/api/appointments/${id}`, appointment)
     .then(() =>setState({...state, appointments}))
-    .catch(error => console.log('Error! ', error))
   }
 
   function cancelInterview(id) {
