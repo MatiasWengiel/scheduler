@@ -43,8 +43,10 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     }
-
-    setState({...state, appointments})
+    // setState({...state, appointments})
+    return axios.put(`http://localhost:8001/api/appointments/${id}`, appointment)
+    .then(() =>setState({...state, appointments}))
+    .catch(error => console.log('Error! ', error))
   }
 
   //Creates an array of appointments for any given day
