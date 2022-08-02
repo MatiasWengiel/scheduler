@@ -4,22 +4,24 @@ export function getAppointmentsForDay(state, day) {
 
   for (const singleDay of state.days) {
     if (singleDay.name === day) {
-      singleDay.appointments.forEach(appt => appointmentArray.push(state.appointments[appt]))
+      singleDay.appointments.forEach((appt) =>
+        appointmentArray.push(state.appointments[appt])
+      );
     }
   }
 
-  return appointmentArray
+  return appointmentArray;
 }
 
 //Takes the interviewers data from state, and for a given interview returns the interview with the name (rather than number) of the interviewer
 export function getInterview(state, interview) {
   if (interview === null) return null;
 
-  const namedInterviewer = state.interviewers[interview.interviewer]
+  const namedInterviewer = state.interviewers[interview.interviewer];
   return {
     student: interview.student,
-    interviewer: namedInterviewer
-  }
+    interviewer: namedInterviewer,
+  };
 }
 
 export function getInterviewersForDay(state, day) {
@@ -27,7 +29,9 @@ export function getInterviewersForDay(state, day) {
 
   for (const singleDay of state.days) {
     if (singleDay.name === day) {
-      singleDay.interviewers.forEach(interviewer => interviewersArray.push(state.interviewers[interviewer]))
+      singleDay.interviewers.forEach((interviewer) =>
+        interviewersArray.push(state.interviewers[interviewer])
+      );
     }
   }
 
