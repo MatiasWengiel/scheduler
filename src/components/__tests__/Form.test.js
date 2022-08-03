@@ -46,7 +46,11 @@ describe("Form", () => {
   it("validates that the interviewer cannot be null", () => {
     const onSave = jest.fn();
     const { getByText } = render(
-      <Form interviewers={interviewers} onSave={onSave} />
+      <Form
+        interviewers={interviewers}
+        onSave={onSave}
+        student="Lydia Miller-Jones"
+      />
     );
     fireEvent.click(getByText("Save"));
 
