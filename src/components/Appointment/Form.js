@@ -5,6 +5,7 @@ import InterviewerList from "../InterviewerList";
 export default function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [error, setError] = useState("");
 
   const reset = () => {
     setStudent("");
@@ -15,6 +16,18 @@ export default function Form(props) {
     reset();
     props.onCancel();
   };
+
+  function validate() {
+    if (student === "") {
+      setError("Student name cannot be blank");
+      return;
+    }
+    if (interviewer === null) {
+      setError("Please select an interviewer");
+      return;
+    }
+    props.onSave(student, interviewer);
+  }
 
   return (
     <main className="appointment__card appointment__card--create">
@@ -30,6 +43,7 @@ export default function Form(props) {
             data-testid="student-name-input"
           />
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
@@ -45,7 +59,7 @@ export default function Form(props) {
             confirm
             onClick={(e) => {
               e.preventDefault();
-              props.onSave(student, interviewer);
+              validate();
             }}
           >
             Save
