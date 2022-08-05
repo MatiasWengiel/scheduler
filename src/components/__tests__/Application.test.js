@@ -70,24 +70,30 @@ describe("Application", () => {
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
-    fireEvent.click(getByAltText(container, "Delete"));
+    const appointment = getAllByTestId(container, "appointment").find(
+      (appointment) => queryByText(appointment, "Archie Cohen")
+    );
+    fireEvent.click(getByAltText(appointment, "Delete"));
     //Checks to see that the confirmation window appears
     expect(
-      getByText(container, /are you sure you wish to delete this appointment?/i)
+      getByText(
+        appointment,
+        /are you sure you wish to delete this appointment?/i
+      )
     ).toBeInTheDocument();
 
-    fireEvent.click(getByText(container, "Confirm"));
+    fireEvent.click(getByText(appointment, "Confirm"));
 
     //Confirms that the "Deleting" mode is shown while awaiting server response
-    await waitForElement(() => getByText(container, "Deleting"));
+    await waitForElement(() => getByText(appointment, "Deleting"));
     //Confirms that the interview with Archie Cohen was deleted
-    expect(queryByText(container, "Archie Cohen")).not.toBeInTheDocument();
+    expect(queryByText(appointment, "Archie Cohen")).not.toBeInTheDocument();
 
     //Checks to see that the spots remaining for Monday are updated correctly
     const day = getAllByTestId(container, "day").find((day) =>
       getByText(day, "Monday")
     );
-    console.log(prettyDOM(container));
+
     expect(queryByText(day, "2 spots remaining")).toBeInTheDocument();
   });
 });
