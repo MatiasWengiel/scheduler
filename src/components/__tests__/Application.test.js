@@ -11,6 +11,7 @@ import {
   getByPlaceholderText,
   queryByText,
   prettyDOM,
+  getByTestId,
 } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -95,5 +96,36 @@ describe("Application", () => {
     );
 
     expect(queryByText(day, "2 spots remaining")).toBeInTheDocument();
+  });
+
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+    const { container } = render(<Application />);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    console.log(prettyDOM(container));
+    //Selects the appointment with Archie Cohen and clicks the Edit button
+    const appointment = getAllByTestId(container, "appointment").find(
+      (appointment) => queryByText(appointment, "Archie Cohen")
+    );
+    fireEvent.click(getByAltText(appointment, "Edit"));
+
+    //Waits for the fillable form (which includes the Save button) to load, then changes the name in the input to John Smith and clicks Save
+    await waitForElement(() => getByText(appointment, "Save"));
+
+    fireEvent.change(getByTestId(appointment, "student-name-input"), {
+      target: { value: "John Smith" },
+    });
+    fireEvent.click(getByText(appointment, "Save"));
+    //Waits for the "Saving..." message to display, and checks to see if John Smith is found in the appointment instead of Archie Cohen
+    await waitForElement(() => getByText(appointment, "Saving"));
+
+    expect(getByText(appointment, "John Smith")).toBeInTheDocument();
+    expect(queryByText(appointment, "Archie Cohen")).not.toBeInTheDocument();
+
+    //Checks to see that the spots remaining for Monday are unchanged
+    const day = getAllByTestId(container, "day").find((day) =>
+      getByText(day, "Monday")
+    );
+    // console.log(prettyDOM(container));
+    // expect(queryByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 });
