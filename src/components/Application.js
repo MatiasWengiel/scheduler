@@ -11,7 +11,7 @@ import {
 } from "../helpers/selectors";
 import useApplicationData from "../hooks/useApplicationData";
 
-export default function Application(props) {
+export default function Application() {
   const { state, setDay, bookInterview, cancelInterview } =
     useApplicationData();
 
