@@ -10,6 +10,7 @@ import {
   getByAltText,
   getByPlaceholderText,
   queryByText,
+  prettyDOM,
 } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -62,5 +63,31 @@ describe("Application", () => {
     );
 
     expect(queryByText(day, "no spots remaining")).toBeInTheDocument();
+  });
+
+  it("loads data, cancels an interview, and increases the spots remaining for Monday by 1", async () => {
+    const { container } = render(<Application />);
+
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    fireEvent.click(getByAltText(container, "Delete"));
+    //Checks to see that the confirmation window appears
+    expect(
+      getByText(container, /are you sure you wish to delete this appointment?/i)
+    ).toBeInTheDocument();
+
+    fireEvent.click(getByText(container, "Confirm"));
+
+    //Confirms that the "Deleting" mode is shown while awaiting server response
+    await waitForElement(() => getByText(container, "Deleting"));
+    //Confirms that the interview with Archie Cohen was deleted
+    expect(queryByText(container, "Archie Cohen")).not.toBeInTheDocument();
+
+    //Checks to see that the spots remaining for Monday are updated correctly
+    const day = getAllByTestId(container, "day").find((day) =>
+      getByText(day, "Monday")
+    );
+    console.log(prettyDOM(container));
+    expect(queryByText(day, "2 spots remaining")).toBeInTheDocument();
   });
 });
