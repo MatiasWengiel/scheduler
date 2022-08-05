@@ -125,7 +125,7 @@ describe("Application", () => {
     const day = getAllByTestId(container, "day").find((day) =>
       getByText(day, "Monday")
     );
-    // console.log(prettyDOM(container));
-    // expect(queryByText(day, "1 spot remaining")).toBeInTheDocument();
+
+    expect(queryByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 });

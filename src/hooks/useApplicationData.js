@@ -74,21 +74,36 @@ export default function useApplicationData() {
     return days;
   }
 
-  //Books a new interview or updates an existing one
-  function bookInterview(id, interview) {
+  function getAppointments(id, interview) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
     };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
+
+    const appointments = { ...state.appointments, [id]: appointment };
+
+    return { appointment, appointments };
+  }
+
+  //Books a new interview or updates an existing one
+  function bookInterview(id, interview) {
+    const { appointment, appointments } = getAppointments(id, interview);
 
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointment)
       .then(() => {
         const days = updateSpots("bookAppointment");
+        dispatch({ type: SET_INTERVIEW, appointments, days });
+      });
+  }
+
+  function editInterview(id, interview) {
+    const { appointment, appointments } = getAppointments(id, interview);
+
+    return axios
+      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .then(() => {
+        const days = state.days;
         dispatch({ type: SET_INTERVIEW, appointments, days });
       });
   }
@@ -112,5 +127,5 @@ export default function useApplicationData() {
       });
   }
 
-  return { state, setDay, bookInterview, cancelInterview };
+  return { state, setDay, bookInterview, editInterview, cancelInterview };
 }

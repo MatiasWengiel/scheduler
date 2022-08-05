@@ -30,12 +30,21 @@ export default function Appointment(props) {
       interviewer,
     };
 
-    transition(SAVING);
+    if (mode === CREATE) {
+      transition(SAVING);
+      props
+        .bookInterview(props.id, interview)
+        .then(() => transition(SHOW))
+        .catch(() => transition(ERROR_SAVE, true));
+    }
 
-    props
-      .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
-      .catch(() => transition(ERROR_SAVE, true));
+    if (mode === EDIT) {
+      transition(SAVING);
+      props
+        .editInterview(props.id, interview)
+        .then(() => transition(SHOW))
+        .catch(() => transition(ERROR_SAVE, true));
+    }
   }
 
   function deleteConfirmed() {
