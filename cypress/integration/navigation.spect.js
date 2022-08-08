@@ -13,7 +13,7 @@ describe("Navigation", () => {
 });
 
 describe("Interview management", () => {
-  it("should book an interview", () => {
+  xit("should book an interview", () => {
     cy.request("GET", "http://localhost:8001/api/debug/reset");
 
     cy.visit("/");
@@ -38,12 +38,50 @@ describe("Interview management", () => {
       "Tori Malcolm"
     );
   });
-  it("should edit an interview", () => {
+  xit("should edit an interview", () => {
     cy.request("GET", "http://localhost:8001/api/debug/reset");
 
     cy.visit("/");
+    //Select the filled out appointment and click on the edit button (note: force click required as cypress does not natively support a hover css action)
+    cy.get(".appointment__card--show")
+      .get("img[alt=Edit]")
+      .click({ force: true });
 
-    cy.get(".appointment__card--show").contains("Archie Cohen");
+    //Select the text input field, clear it, change the name to "Edited Student" and change the instructor to "Tori Malcolm", then save.
+    cy.get("[data-testid=student-name-input]")
+      .clear()
+      .type("Edited Student")
+      .get("[alt='Tori Malcolm']")
+      .click()
+      .get("Button")
+      .contains("Save")
+      .click();
+
+    //Confirm that Edited Student's interview was rebooked with Tori Malcolm
+    cy.contains(".appointment__card--show", "Edited Student").contains(
+      ".appointment__card--show",
+      "Tori Malcolm"
+    );
   });
-  it("should cancel an interview", () => {});
+
+  it("should cancel an interview", () => {
+    cy.request("GET", "http://localhost:8001/api/debug/reset");
+
+    //Alias the call we are making to the API so that we can wait() for it to return
+    cy.intercept("/api/appointments/*").as("delete-request");
+
+    cy.visit("/");
+    //Confirm that the Archie Cohen appointment is present
+    cy.contains(".appointment__card--show", "Archie Cohen");
+    //Select the filled out appointment and click on the delete button (note: force click required as cypress does not natively support a hover css action)
+    cy.get(".appointment__card--show")
+      .get("img[alt=Delete]")
+      .click({ force: true });
+
+    //Confirm delete and wait for it to return
+    cy.get("Button").contains("Confirm").click().wait("@delete-request");
+
+    //Ensure that the Archie Cohen appointment that previously existed no longer does
+    cy.contains(".appointment__card--show", "Archie Cohen").should("not.exist");
+  });
 });
