@@ -67,6 +67,7 @@ export default function useApplicationData() {
           return { ...day, spots: day.spots - 1 };
         } else if (mode === "DELETE") {
           return { ...day, spots: day.spots + 1 };
+          //If not create or delete, it must be edit
         } else {
           return { ...day };
         }
