@@ -7,7 +7,7 @@ export default function useVisualMode(initial) {
   const transition = (secondState, skip = false) => {
     setMode(secondState);
 
-    //If passed true as second argument, skips recording state to history so that the temporary state will be skipped if we use the back function
+    //If passed true as second argument, skips recording state to history so that the temporary state will be skipped if we use the back function. Used for async status notifications ("Saving..." or "Deleting...") that we do not need to return to if we encounter a server error
     if (skip === false) {
       setHistory((prev) => [...prev, secondState]);
     }
