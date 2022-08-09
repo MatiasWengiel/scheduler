@@ -59,6 +59,7 @@ export default function useApplicationData() {
     });
   }, []);
 
+  //Updates spots remaining info in sidebar
   function updateSpots(mode) {
     const days = state.days.map((day) => {
       if (day.name === state.day) {
@@ -76,6 +77,7 @@ export default function useApplicationData() {
     return days;
   }
 
+  //Saves an interview PUTs info to server. Works for both booking a new interview and editing an existing one
   function saveInterview(id, interview, mode) {
     const appointment = {
       ...state.appointments[id],
