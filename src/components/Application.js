@@ -28,6 +28,7 @@ export default function Application() {
         id={appointment.id}
         interviewers={interviewersArray}
         interview={interview}
+        time={appointment.time}
         bookInterview={bookInterview}
         editInterview={editInterview}
         cancelInterview={cancelInterview}
