@@ -10,6 +10,7 @@ import Confirm from "./Confirm";
 import Error from "./Error";
 
 export default function Appointment(props) {
+  //Constants below represent the state of the visualMode for the <Appointment/> (i.e. empty, existing/show, fillable form/create, etc)
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
