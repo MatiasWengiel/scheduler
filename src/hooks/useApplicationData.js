@@ -85,7 +85,6 @@ export default function useApplicationData() {
     return { appointment, appointments };
   }
 
-  //Books a new interview or updates an existing one
   function bookInterview(id, interview) {
     const { appointment, appointments } = getAppointments(id, interview);
 
