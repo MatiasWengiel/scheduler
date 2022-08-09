@@ -12,7 +12,7 @@ import {
 import useApplicationData from "../hooks/useApplicationData";
 
 export default function Application() {
-  const { state, setDay, bookInterview, editInterview, cancelInterview } =
+  const { state, setDay, saveInterview, editInterview, cancelInterview } =
     useApplicationData();
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
@@ -29,7 +29,7 @@ export default function Application() {
         interviewers={interviewersArray}
         interview={interview}
         time={appointment.time}
-        bookInterview={bookInterview}
+        saveInterview={saveInterview}
         editInterview={editInterview}
         cancelInterview={cancelInterview}
       />
