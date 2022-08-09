@@ -59,13 +59,15 @@ export default function useApplicationData() {
     });
   }, []);
 
-  function updateSpots(requestType) {
+  function updateSpots(mode) {
     const days = state.days.map((day) => {
       if (day.name === state.day) {
-        if (requestType === "bookAppointment") {
+        if (mode === "CREATE") {
           return { ...day, spots: day.spots - 1 };
-        } else {
+        } else if (mode === "DELETE") {
           return { ...day, spots: day.spots + 1 };
+        } else {
+          return { ...day };
         }
       } else {
         return { ...day };
@@ -74,7 +76,7 @@ export default function useApplicationData() {
     return days;
   }
 
-  function getAppointments(id, interview) {
+  function saveInterview(id, interview, mode) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -82,27 +84,10 @@ export default function useApplicationData() {
 
     const appointments = { ...state.appointments, [id]: appointment };
 
-    return { appointment, appointments };
-  }
-
-  function bookInterview(id, interview) {
-    const { appointment, appointments } = getAppointments(id, interview);
-
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointment)
       .then(() => {
-        const days = updateSpots("bookAppointment");
-        dispatch({ type: SET_INTERVIEW, appointments, days });
-      });
-  }
-
-  function editInterview(id, interview) {
-    const { appointment, appointments } = getAppointments(id, interview);
-
-    return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
-      .then(() => {
-        const days = state.days;
+        const days = updateSpots(mode);
         dispatch({ type: SET_INTERVIEW, appointments, days });
       });
   }
@@ -121,10 +106,10 @@ export default function useApplicationData() {
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
-        const days = updateSpots();
+        const days = updateSpots("DELETE");
         dispatch({ type: SET_INTERVIEW, appointments, days });
       });
   }
 
-  return { state, setDay, bookInterview, editInterview, cancelInterview };
+  return { state, setDay, saveInterview, cancelInterview };
 }

@@ -24,27 +24,17 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-  function save(name, interviewer) {
+  function save(name, interviewer, mode) {
     const interview = {
       student: name,
       interviewer,
     };
 
-    if (mode === CREATE) {
-      transition(SAVING);
-      props
-        .bookInterview(props.id, interview)
-        .then(() => transition(SHOW))
-        .catch(() => transition(ERROR_SAVE, true));
-    }
-
-    if (mode === EDIT) {
-      transition(SAVING);
-      props
-        .editInterview(props.id, interview)
-        .then(() => transition(SHOW))
-        .catch(() => transition(ERROR_SAVE, true));
-    }
+    transition(SAVING);
+    props
+      .saveInterview(props.id, interview, mode)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
   }
 
   function deleteConfirmed() {
@@ -74,6 +64,7 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           onSave={save}
           onCancel={() => back()}
+          mode={mode}
         />
       )}
       {mode === EDIT && (
