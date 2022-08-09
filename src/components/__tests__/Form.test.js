@@ -66,6 +66,7 @@ describe("Form", () => {
         student="Lydia Miller-Jones"
         interviewer={interviewers[0].id}
         onSave={onSave}
+        mode="CREATE"
       />
     );
     fireEvent.click(getByText("Save"));
@@ -73,13 +74,18 @@ describe("Form", () => {
     expect(queryByText(/please select an interviewer/i)).toBeNull();
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1, "CREATE");
   });
 
   it("submits the name entered by the user", () => {
     const onSave = jest.fn();
     const { getByText, getByPlaceholderText } = render(
-      <Form interviewers={interviewers} onSave={onSave} interviewer={1} />
+      <Form
+        interviewers={interviewers}
+        onSave={onSave}
+        interviewer={1}
+        mode="CREATE"
+      />
     );
 
     const input = getByPlaceholderText("Enter Student Name");
@@ -88,13 +94,18 @@ describe("Form", () => {
     fireEvent.click(getByText("Save"));
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1, "CREATE");
   });
 
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
     const { getByText, getByPlaceholderText, queryByText } = render(
-      <Form interviewers={interviewers} onSave={onSave} interviewer={1} />
+      <Form
+        interviewers={interviewers}
+        onSave={onSave}
+        interviewer={1}
+        mode="CREATE"
+      />
     );
 
     fireEvent.click(getByText("Save"));
@@ -110,7 +121,7 @@ describe("Form", () => {
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1, "CREATE");
   });
 
   it("calls onCancel and resets the input field", () => {
