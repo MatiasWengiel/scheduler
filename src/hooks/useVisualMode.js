@@ -5,6 +5,7 @@ export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
+  //Transitions forward from different visual modes. Records them to history unless passed a value of true for "skip" parameter (used for async status messages like "Saving..." or "Deleting...")
   const transition = (secondState, skip = false) => {
     setMode(secondState);
 
@@ -14,6 +15,7 @@ export default function useVisualMode(initial) {
     }
   };
 
+  //Transitions back to the previous visual mode in the history
   const back = () => {
     if (history.length > 1) {
       setMode(history[history.length - 2]);
