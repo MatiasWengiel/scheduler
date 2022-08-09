@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+//Function handles which <Appointment /> mode to show (e.g. empty with an add button, existing, empty form, filled out form, etc)
 export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
