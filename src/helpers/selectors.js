@@ -24,6 +24,7 @@ export function getInterview(state, interview) {
   };
 }
 
+//Takes the list of interviewers from state and the chosen day, and returns an array of the interviewers available for the given day
 export function getInterviewersForDay(state, day) {
   let interviewersArray = [];
 
