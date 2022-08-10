@@ -30,7 +30,6 @@ export default function Application() {
         interview={interview}
         time={appointment.time}
         saveInterview={saveInterview}
-        editInterview={editInterview}
         cancelInterview={cancelInterview}
       />
     );
